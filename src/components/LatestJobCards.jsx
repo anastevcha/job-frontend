@@ -13,7 +13,7 @@ const LatestJobCards = () => {
                 <p className="text-sm text-gray-600">что то рандомное описание что то рандомное описание что то рандомное описание что то рандомное описание</p>
             </div>
             <div className="flex items-center gap-2 mt-4">
-                <Badge className={"text-blue-700 font-bold"} variant="ghost">12 позиций</Badge>
+                <Badge className={"text-blue-700 font-bold"} variant="ghost">12 вакантных мест</Badge>
                 <Badge className={"text-[#F83002]"} variant="ghost">Частичная занятость</Badge>
                 <Badge className={"text-[#7209b7]"} variant="ghost">Высокий доход</Badge>
             </div>

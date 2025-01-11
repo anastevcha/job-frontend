@@ -14,9 +14,9 @@ const Navbar = () => {
                 </div>
                 <div className='flex items-center gap-12'>
                     <ul className='flex font-medium items-center gap-5'>
-                        <li>Главная</li>
-                        <li>Вакансии</li>
-                        <li>Поиск</li>
+                        <li><Link to="/">Главная</Link></li>
+                        <li><Link to="/jobs">Вакансии</Link></li>
+                        <li><Link to="/browse">Поиск</Link></li>
                     </ul>
                     {
                         !user ? (

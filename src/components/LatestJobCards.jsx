@@ -1,21 +1,21 @@
 import React from "react";
 import { Badge } from "./ui/badge";
 
-const LatestJobCards = () => {
+const LatestJobCards = ({job}) => {
     return (
         <div className="p-5 rounded-md shadow-xl bg-white border border-gray-100 cursor-pointer">
             <div>
-                <h1 className="font-medium text-lg">Название компании</h1>
+                <h1 className="font-medium text-lg">{job?.company?.name}</h1>
                 <p className="text-sm text-gray-500">Россия</p>
             </div>
             <div>
-                <h1 className="font-bold text-lg my-2">Наименование компании</h1>
-                <p className="text-sm text-gray-600">что то рандомное описание что то рандомное описание что то рандомное описание что то рандомное описание</p>
+                <h1 className="font-bold text-lg my-2">{job?.title}</h1>
+                <p className="text-sm text-gray-600">{job?.description}</p>
             </div>
             <div className="flex items-center gap-2 mt-4">
-                <Badge className={"text-blue-700 font-bold"} variant="ghost">12 вакантных мест</Badge>
-                <Badge className={"text-[#F83002]"} variant="ghost">Частичная занятость</Badge>
-                <Badge className={"text-[#7209b7]"} variant="ghost">Высокий доход</Badge>
+                <Badge className={"text-blue-700 font-bold"} variant="ghost">{job?.position} вакантных мест</Badge>
+                <Badge className={"text-[#F83002]"} variant="ghost">{job?.jobType}</Badge>
+                <Badge className={"text-[#3995ca]"} variant="ghost">{job?.salary} тысяч рублей</Badge>
             </div>
         </div>
     )

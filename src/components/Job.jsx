@@ -1,55 +1,141 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
-import { Bookmark } from "lucide-react";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Bookmark, Loader2 } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { JOB_API_END_POINT } from "@/utils/constant";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 
-
-const Job = ({job}) => {
+const Job = ({ job }) => {
     const navigate = useNavigate();
-    //const jobId="wrwtwtwrwtykzdawrawr";
+    const [loading, setLoading] = useState(false);
 
-    const daysAgoFunction=(mongodbTime)=>{
-        const createdAt=new Date(mongodbTime);
+    // Получаем список сохранённых вакансий из Redux
+    const { savedJobs } = useSelector(store => store.job);
+
+    // Проверяем, сохранена ли эта вакансия
+    const isSaved = useSelector((store) =>
+        store.job.savedJobs?.some(savedJob => savedJob._id === job._id)
+    );
+
+    const daysAgoFunction = (mongodbTime) => {
+        const createdAt = new Date(mongodbTime);
         const currentTime = new Date();
         const timeDifference = currentTime - createdAt;
-        return Math.floor(timeDifference/(1000*24*60*60));
-    }
+        return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
+    };
+
+    const saveJobHandler = async () => {
+        if (!job?._id) return;
+
+        setLoading(true);
+        try {
+            const res = await axios.post(
+                `${JOB_API_END_POINT}/save/${job._id}`,
+                {},
+                {
+                    withCredentials: true,
+                }
+            );
+
+            if (res.data.success) {
+                toast.success(res.data.message);
+                // Здесь можно обновить Redux напрямую, если нужно
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error(error.response?.data?.message || "Ошибка при сохранении вакансии");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <div className="p-5 rounded-md shadow-xl bg-white border-gray-100">
-            <div className="flex items-center justify-between">
-            <p className='text-sm text-gray-500'>{daysAgoFunction(job?.createdAt) === 0 ? "Сегодня" : `${daysAgoFunction(job?.createdAt)} дней назад`}</p>
-                <Button variant="outline" className="rounded-full" size="icon"><Bookmark /></Button>
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="p-6 rounded-xl shadow-md bg-white border border-gray-200 hover:shadow-lg transition-shadow"
+        >
+            {/* Дата + Кнопка сохранения */}
+            <div className="flex items-center justify-between mb-3">
+                <span className="text-xs text-gray-500">
+                    {daysAgoFunction(job?.createdAt) === 0 ? "Сегодня" : `${daysAgoFunction(job?.createdAt)} дней назад`}
+                </span>
+                <Button variant="outline" size="icon" className="h-8 w-8 rounded-full" onClick={saveJobHandler}>
+                    <Bookmark className={`h-4 w-4 ${isSaved ? "fill-current text-blue-500" : ""}`} />
+                </Button>
             </div>
 
-            <div className="flex items-center gap-2 my-2">
-                <Button className="p-6" variant="outline" size="icon">
-                    <Avatar>
-                        <AvatarImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbBNaU07xqYvyBtPMzrI2WmdQcyZz8hYg8FA&s" />
-                    </Avatar>
-                </Button>
+            {/* Компания */}
+            <div className="flex items-center gap-3 mb-4">
+                <Avatar className="h-12 w-12 ring-1 ring-gray-300">
+                    <AvatarImage src={job?.company?.logo} alt={job?.company?.name} />
+                    <AvatarFallback>{job?.company?.name.charAt(0)}</AvatarFallback>
+                </Avatar>
                 <div>
-                    <h1 className="font-medium text-lg">{job?.company?.name}</h1>
+                    <h3 className="font-medium">{job?.company?.name}</h3>
                     <p className="text-sm text-gray-500">Россия</p>
                 </div>
             </div>
-            <div>
-        <h1 className="font-bold text-lg my-2">{job?.title}</h1>
-        <p className="text-sm text-gray-600">{job?.description}</p>
-            </div>
-            <div className="flex items-center gap-2 mt-4">
-                <Badge className={"text-blue-700 font-bold"} variant="ghost">{job?.position} вакантных мест</Badge>
-                <Badge className={"text-[#F83002]"} variant="ghost">{job?.jobType}</Badge>
-                <Badge className={"text-[#3995ca]"} variant="ghost">{job?.salary} тысяч рублей</Badge>
-            </div>
-            <div className="flex items-center gap-4 mt-4">
-            <Button onClick={()=> navigate(`/description/${job?._id}`)} variant="outline">Подробнее</Button>
 
-                <Button className="bg-[#3995ca]">Сохранить</Button>
-            </div>
-        </div>
-    )
-}
+            {/* Название вакансии */}
+            <h2 className="text-lg font-semibold mb-2 line-clamp-1">{job?.title}</h2>
 
-export default Job
+            {/* Описание */}
+            <p className="text-sm text-gray-600 mb-4 line-clamp-2">{job?.description}</p>
+
+            {/* Бейджи */}
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+                <Badge variant="outline" className="text-blue-700 font-bold px-2 py-1 text-xs">
+                    {job?.position} вакантных мест
+                </Badge>
+                <Badge variant="outline" className="text-[#F83002] font-medium px-2 py-1 text-xs">
+                    {job?.jobType}
+                </Badge>
+                <Badge variant="outline" className="text-[#3995ca] font-medium px-2 py-1 text-xs">
+                    {job?.salary} тыс. руб.
+                </Badge>
+            </div>
+
+            {/* Кнопки */}
+            <div className="flex flex-col sm:flex-row gap-2 mt-4">
+                <Button
+                    asChild
+                    variant="outline"
+                    className="sm:flex-1"
+                    onClick={() => navigate(`/description/${job?._id}`)}
+                >
+                    <span>Подробнее</span>
+                </Button>
+                <Button
+                    onClick={saveJobHandler}
+                    disabled={loading || isSaved}
+                    className={`sm:flex-1 ${
+                        isSaved
+                            ? "bg-gray-400 hover:bg-gray-400 cursor-not-allowed"
+                            : "bg-[#3995ca] hover:bg-[#2e78a3]"
+                    }`}
+                >
+                    {loading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Сохраняется...
+                        </>
+                    ) : isSaved ? (
+                        "Сохранено"
+                    ) : (
+                        "Сохранить"
+                    )}
+                </Button>
+            </div>
+        </motion.div>
+    );
+};
+
+export default Job;

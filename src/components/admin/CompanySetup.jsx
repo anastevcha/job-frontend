@@ -28,7 +28,6 @@ const CompanySetup = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    // Обработчики событий
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
@@ -103,7 +102,7 @@ const CompanySetup = () => {
                     onSubmit={submitHandler}
                     className="bg-white p-6 rounded-xl shadow-md border border-gray-200"
                 >
-                    {/* Кнопка "Назад" + Заголовок */}
+                    
                     <motion.div
                         initial={{ x: -10, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
@@ -122,7 +121,7 @@ const CompanySetup = () => {
                         <h1 className="font-bold text-xl">Редактирование компании</h1>
                     </motion.div>
 
-                    {/* Форма */}
+                    
                     <div className="grid grid-cols-2 gap-4 mb-4">
                         <div>
                             <Label>Название компании</Label>
@@ -192,7 +191,7 @@ const CompanySetup = () => {
                         </div>
                     </div>
 
-                    {/* Кнопка отправки */}
+                    
                     <motion.div
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}

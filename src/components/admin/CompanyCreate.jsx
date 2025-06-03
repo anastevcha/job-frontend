@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { setSingleCompany } from "@/redux/companySlice";
 import { COMPANY_API_END_POINT } from "@/utils/constant";
 import { motion } from "framer-motion";
-import { Briefcase } from "lucide-react";
+import { Briefcase, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const CompanyCreate = () => {

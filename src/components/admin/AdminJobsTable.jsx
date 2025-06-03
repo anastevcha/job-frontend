@@ -14,10 +14,14 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "../ui/popover";
-import { Edit2, Eye, MoreHorizontal } from "lucide-react";
+import { Edit2, Eye, Trash2, MoreHorizontal } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
+import axios from "axios";
+import { toast } from "sonner";
+
+const JOB_API_END_POINT = "http://localhost:8000/api/v1/job"; 
 
 const AdminJobsTable = ({ jobs }) => {
     const navigate = useNavigate();
@@ -29,6 +33,31 @@ const AdminJobsTable = ({ jobs }) => {
             </div>
         );
     }
+
+    // Функция удаления вакансии
+    const deleteJobHandler = async (e, jobId) => {
+        e.stopPropagation(); 
+
+        const confirmDelete = window.confirm("Вы уверены, что хотите удалить эту вакансию?");
+        if (!confirmDelete) return;
+
+        try {
+            const res = await axios.delete(`${JOB_API_END_POINT}/${jobId}`, {
+                withCredentials: true,
+            });
+
+            if (res.data.success) {
+                toast.success(res.data.message);
+
+                
+                const updatedJobs = jobs.filter((job) => job._id !== jobId);
+                navigate(0); 
+            }
+        } catch (error) {
+            console.error("Ошибка при удалении вакансии:", error);
+            toast.error(error.response?.data?.message || "Не удалось удалить вакансию");
+        }
+    };
 
     return (
         <motion.div
@@ -77,12 +106,11 @@ const AdminJobsTable = ({ jobs }) => {
                                                 </Button>
                                             </PopoverTrigger>
                                             <PopoverContent className="p-2 space-y-1 min-w-[160px]">
-                                                {/* Редактирование */}
+                                                
                                                 <div
                                                     onClick={(e) => {
-                                                        e.stopPropagation(); // ⛔ Останавливаем всплытие
-                                                        console.log("Переход на редактирование:", `/admin/jobs/${job._id}`);
-                                                        navigate(`/admin/jobs/${job._id}`);
+                                                        e.stopPropagation();
+                                                        navigate(`/admin/jobs/setup/${job._id}`);
                                                     }}
                                                     className="flex items-center gap-2 px-3 py-2 rounded-md text-sm hover:bg-gray-100 cursor-pointer"
                                                 >
@@ -90,7 +118,7 @@ const AdminJobsTable = ({ jobs }) => {
                                                     <span>Редактировать</span>
                                                 </div>
 
-                                                {/* Откликнувшиеся */}
+                                                
                                                 <div
                                                     onClick={(e) => {
                                                         e.stopPropagation();
@@ -100,6 +128,15 @@ const AdminJobsTable = ({ jobs }) => {
                                                 >
                                                     <Eye className="w-4 h-4 text-green-600" />
                                                     <span>Откликнувшиеся</span>
+                                                </div>
+
+                                                
+                                                <div
+                                                    onClick={(e) => deleteJobHandler(e, job._id)}
+                                                    className="flex items-center gap-2 px-3 py-2 rounded-md text-sm hover:bg-red-100 cursor-pointer text-red-600"
+                                                >
+                                                    <Trash2 className="w-4 h-4 text-red-600" />
+                                                    <span>Удалить</span>
                                                 </div>
                                             </PopoverContent>
                                         </Popover>

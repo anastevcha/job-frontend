@@ -22,8 +22,12 @@ const statusColors = {
 const AppliedJobTable = () => {
     const { allAppliedJobs } = useSelector((store) => store.job);
 
-    // Проверяем, есть ли данные
-    if (!Array.isArray(allAppliedJobs) || allAppliedJobs.length === 0) {
+    // Фильтруем только те отклики, где job НЕ null
+    const validAppliedJobs = allAppliedJobs?.filter(
+        (appliedJob) => appliedJob?.job
+    );
+
+    if (!Array.isArray(allAppliedJobs) || validAppliedJobs.length === 0) {
         return (
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -56,7 +60,7 @@ const AppliedJobTable = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {allAppliedJobs.map((appliedJob) => (
+                    {validAppliedJobs.map((appliedJob) => (
                         <motion.tr
                             key={appliedJob._id}
                             whileHover={{ backgroundColor: "#f9fafb" }}

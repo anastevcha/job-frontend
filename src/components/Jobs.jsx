@@ -9,7 +9,7 @@ const Jobs = () => {
     const { allJobs, searchedQuery } = useSelector((store) => store.job);
     const [filteredJobs, setFilteredJobs] = useState(allJobs);
 
-    // Логика фильтрации
+    
     useEffect(() => {
         if (!allJobs || allJobs.length === 0) {
             setFilteredJobs([]);
@@ -41,17 +41,17 @@ const Jobs = () => {
             const location = job.location?.toLowerCase() || "";
             const salary = job.salary || "";
 
-            //  Должность — хотя бы одно слово должно совпасть в title или description
+            
             const matchPosition = selectedPositions.length === 0 ||
                 selectedPositions.some(
                     word => title.includes(word) || description.includes(word)
                 );
 
-            //  Местоположение — хотя бы одно совпадение
+            
             const matchLocation = selectedLocations.length === 0 ||
                 selectedLocations.some(word => location.includes(word));
 
-            //  Зарплата — проверяем диапазон
+            
             const matchSalary = selectedSalaries.length === 0 ||
                 selectedSalaries.some(range => {
                     const [minStr, maxStr] = range.split("-").map(part => part.trim());
@@ -77,7 +77,7 @@ const Jobs = () => {
                 className="max-w-7xl mx-auto mt-5"
             >
                 <div className="flex flex-col md:flex-row gap-6">
-                    {/* Боковая панель фильтров */}
+                    
                     <div className="md:w-1/4 lg:w-1/5">
                         <FilterCard />
                     </div>

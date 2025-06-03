@@ -165,7 +165,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                                     id="resume"
                                     name="file"
                                     type="file"
-                                    accept=".pdf,.docx"
+                                    accept=".png,.jpg"
                                     onChange={fileChangeHandler}
                                     className="cursor-pointer"
                                 />

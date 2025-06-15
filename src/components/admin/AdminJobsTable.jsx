@@ -110,7 +110,7 @@ const AdminJobsTable = ({ jobs }) => {
                                                 <div
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        navigate(`/admin/jobs/setup/${job._id}`);
+                                                        navigate(`/admin/jobs/${job._id}`);
                                                     }}
                                                     className="flex items-center gap-2 px-3 py-2 rounded-md text-sm hover:bg-gray-100 cursor-pointer"
                                                 >

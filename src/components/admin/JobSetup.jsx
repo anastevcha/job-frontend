@@ -32,13 +32,13 @@ const JobSetup = () => {
     });
 
     const [loading, setLoading] = useState(false);
-    const { singleJob } = useSelector((store) => store.job); // Текущая вакансия
-    const { companies } = useSelector((store) => store.company); // Список компаний
+    const { singleJob } = useSelector((store) => store.job); 
+    const { companies } = useSelector((store) => store.company); 
 
     // Получаем текущую вакансию по ID
     useGetAllAdminJobs();
 
-    // Обработчики событий
+    
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
@@ -72,7 +72,7 @@ const JobSetup = () => {
 
             if (res.data.success) {
                 toast.success(res.data.message);
-                navigate("/admin/jobs"); // Перенаправление после обновления
+                navigate("/admin/jobs"); 
             }
         } catch (error) {
             console.log(error);
@@ -110,7 +110,7 @@ const JobSetup = () => {
             <Navbar />
 
             <div className="max-w-xl mx-auto my-10 px-4">
-                {/* Заголовок + кнопка Назад */}
+                
                 <motion.div
                     initial={{ y: -20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -128,7 +128,7 @@ const JobSetup = () => {
                     <h1 className="font-bold text-2xl">Редактирование вакансии</h1>
                 </motion.div>
 
-                {/* Форма редактирования */}
+                
                 <motion.form
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -136,7 +136,7 @@ const JobSetup = () => {
                     onSubmit={submitHandler}
                     className="bg-white p-6 rounded-xl shadow-md border border-gray-200"
                 >
-                    {/* Поля формы */}
+                    
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
                             <Label>Название вакансии</Label>

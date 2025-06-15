@@ -7,20 +7,18 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { JOB_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {saveJob, unsaveJob } from "@/redux/jobSlice";
 import { motion } from "framer-motion";
 
 const Job = ({ job }) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
 
-    // Получаем список сохранённых вакансий из Redux
-    const { savedJobs } = useSelector(store => store.job);
-
-    // Проверяем, сохранена ли эта вакансия
-    const isSaved = useSelector((store) =>
-        store.job.savedJobs?.some(savedJob => savedJob._id === job._id)
-    );
+    // Получаем список сохранённых вакансий
+    const savedJobs = useSelector((store) => store.job.savedJobs);
+    const isSaved = savedJobs?.some(savedJob => savedJob._id === job._id);
 
     const daysAgoFunction = (mongodbTime) => {
         const createdAt = new Date(mongodbTime);
@@ -34,21 +32,35 @@ const Job = ({ job }) => {
 
         setLoading(true);
         try {
-            const res = await axios.post(
-                `${JOB_API_END_POINT}/save/${job._id}`,
-                {},
-                {
-                    withCredentials: true,
-                }
-            );
+            if (isSaved) {
+                // Удаляем вакансию из сохранённых
+                const res = await axios.post(
+                    `${JOB_API_END_POINT}/unsave/${job._id}`,
+                    {},
+                    { withCredentials: true }
+                );
 
-            if (res.data.success) {
-                toast.success(res.data.message);
-                // Здесь можно обновить Redux напрямую, если нужно
+                if (res.data.success) {
+                    toast.info("Вакансия удалена из сохранённых");
+                    dispatch(unsaveJob(job._id)); // Убираем из Redux
+                }
+
+            } else {
+                // Сохраняем вакансию
+                const res = await axios.post(
+                    `${JOB_API_END_POINT}/save/${job._id}`,
+                    {},
+                    { withCredentials: true }
+                );
+
+                if (res.data.success) {
+                    toast.success(res.data.message);
+                    dispatch(saveJob(job)); // Добавляем в Redux
+                }
             }
         } catch (error) {
-            console.error(error);
-            toast.error(error.response?.data?.message || "Ошибка при сохранении вакансии");
+            console.error("Ошибка при сохранении/удалении вакансии:", error);
+            toast.error(error.response?.data?.message || "Не удалось выполнить действие");
         } finally {
             setLoading(false);
         }
@@ -62,17 +74,26 @@ const Job = ({ job }) => {
             transition={{ duration: 0.5 }}
             className="p-6 rounded-xl shadow-md bg-white border border-gray-200 hover:shadow-lg transition-shadow"
         >
-            {/* Дата + Кнопка сохранения */}
+            
+            
             <div className="flex items-center justify-between mb-3">
                 <span className="text-xs text-gray-500">
                     {daysAgoFunction(job?.createdAt) === 0 ? "Сегодня" : `${daysAgoFunction(job?.createdAt)} дней назад`}
                 </span>
-                <Button variant="outline" size="icon" className="h-8 w-8 rounded-full" onClick={saveJobHandler}>
-                    <Bookmark className={`h-4 w-4 ${isSaved ? "fill-current text-blue-500" : ""}`} />
+                <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8 rounded-full hover:bg-blue-50"
+                    onClick={saveJobHandler}
+                    disabled={loading}
+                >
+                    <Bookmark
+                        className={`h-4 w-4 ${isSaved ? "fill-blue-500 text-blue-500" : "text-gray-500"}`}
+                    />
                 </Button>
             </div>
 
-            {/* Компания */}
+           
             <div className="flex items-center gap-3 mb-4">
                 <Avatar className="h-12 w-12 ring-1 ring-gray-300">
                     <AvatarImage src={job?.company?.logo} alt={job?.company?.name} />
@@ -84,13 +105,13 @@ const Job = ({ job }) => {
                 </div>
             </div>
 
-            {/* Название вакансии */}
+            
             <h2 className="text-lg font-semibold mb-2 line-clamp-1">{job?.title}</h2>
 
-            {/* Описание */}
+            
             <p className="text-sm text-gray-600 mb-4 line-clamp-2">{job?.description}</p>
 
-            {/* Бейджи */}
+            
             <div className="flex flex-wrap items-center gap-2 mb-4">
                 <Badge variant="outline" className="text-blue-700 font-bold px-2 py-1 text-xs">
                     {job?.position} вакантных мест
@@ -103,7 +124,7 @@ const Job = ({ job }) => {
                 </Badge>
             </div>
 
-            {/* Кнопки */}
+            
             <div className="flex flex-col sm:flex-row gap-2 mt-4">
                 <Button
                     asChild
@@ -115,17 +136,19 @@ const Job = ({ job }) => {
                 </Button>
                 <Button
                     onClick={saveJobHandler}
-                    disabled={loading || isSaved}
+                    disabled={loading}
                     className={`sm:flex-1 ${
-                        isSaved
-                            ? "bg-gray-400 hover:bg-gray-400 cursor-not-allowed"
-                            : "bg-[#3995ca] hover:bg-[#2e78a3]"
+                        loading
+                            ? "cursor-wait"
+                            : isSaved
+                                ? "bg-gray-400 hover:bg-gray-400 cursor-not-allowed"
+                                : "bg-[#3995ca] hover:bg-[#2e78a3]"
                     }`}
                 >
                     {loading ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Сохраняется...
+                            Подождите...
                         </>
                     ) : isSaved ? (
                         "Сохранено"

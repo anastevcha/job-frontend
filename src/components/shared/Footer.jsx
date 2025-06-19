@@ -11,13 +11,13 @@ const Footer = () => {
                     transition={{ duration: 0.5 }}
                     className="flex flex-col md:flex-row justify-between items-center"
                 >
-                    {/* Логотип и авторство */}
+                    
                     <div className="mb-6 md:mb-0 text-center md:text-left">
                         <h2 className="text-2xl font-bold text-[#3995ca]">Трудовой мост</h2>
                         <p className="text-sm text-gray-500 mt-2">© 2025 Дипломный проект. Все права защищены.</p>
                     </div>
 
-                    {/* Социальные сети */}
+                    
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}

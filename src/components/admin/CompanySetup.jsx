@@ -71,7 +71,7 @@ const CompanySetup = () => {
         }
     };
 
-    // Заполняем форму данными из Redux
+    
     useEffect(() => {
         if (singleCompany?._id) {
             setInput({

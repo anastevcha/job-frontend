@@ -16,14 +16,14 @@ const AdminJobs = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // Отправляем текст поиска в Redux (если используется где-то ещё)
+    
     useEffect(() => {
         dispatch(setSearchJobByText(input));
     }, [input]);
 
     const { allAdminJobs } = useSelector((store) => store.job);
 
-    // Фильтрация локально для мгновенного отображения
+    // локальная фильтрация, чтобы результат мгновенно отображался
     const filteredJobs = input
         ? allAdminJobs?.filter(
               (job) =>
@@ -43,20 +43,20 @@ const AdminJobs = () => {
             <Navbar />
 
             <div className="max-w-6xl mx-auto my-10 px-4">
-                {/* Заголовок слева + Поиск и кнопка справа */}
+                
                 <motion.div
                     initial={{ y: -20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
                     className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8 p-4 bg-white rounded-xl shadow-sm border border-gray-200"
                 >
-                    {/* Заголовок слева */}
+                    
                     <h1 className="font-bold text-xl flex items-center gap-2">
                         <Briefcase className="h-5 w-5 text-[#3995ca]" />
                         Ваши вакансии
                     </h1>
 
-                    {/* Поиск и кнопка справа */}
+                    
                     <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
                         <div className="relative w-full sm:max-w-md">
                             <Search className="absolute left-3 top-3 h-4 w-4  text-gray-500" />

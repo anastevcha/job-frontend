@@ -19,7 +19,7 @@ const CompanyCreate = () => {
     const [loading, setLoading] = useState(false);
 
     const registerNewCompany = async () => {
-        // Проверка на пустой ввод
+        // проверка на пустой ввод
         if (!companyName || companyName.trim() === "") {
             toast.error("Пожалуйста, введите название компании");
             return;
@@ -69,7 +69,7 @@ const CompanyCreate = () => {
                     transition={{ delay: 0.2, duration: 0.5 }}
                     className="bg-white p-8 rounded-xl shadow-md border border-gray-200"
                 >
-                    {/* Заголовок */}
+                    
                     <motion.h1
                         initial={{ x: -10, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
@@ -88,7 +88,7 @@ const CompanyCreate = () => {
                         Какое название у вашей компании? Вы можете изменить это позже.
                     </motion.p>
 
-                    {/* Поле ввода */}
+                    
                     <motion.div
                         initial={{ y: 10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -109,7 +109,7 @@ const CompanyCreate = () => {
                         />
                     </motion.div>
 
-                    {/* Кнопки */}
+                    
                     <motion.div
                         initial={{ y: 10, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}

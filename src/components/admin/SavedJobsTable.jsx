@@ -46,7 +46,7 @@ const SavedJobsTable = () => {
                                     <span className="font-medium">{job?.title}</span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    {job?.company?.name || "—" }
+                                    {job?.company?.name || "—"}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap flex items-center gap-2">
                                     <MapPin className="h-4 w-4 text-gray-400" />
@@ -70,8 +70,9 @@ const SavedJobsTable = () => {
                         <tr>
                             <td colSpan="4" className="py-10 text-center">
                                 <div className="flex flex-col items-center justify-center">
-                                    <AlertCircle className="h-12 w-12 text-yellow-500 mb-3" />
-                                    <p className="text-gray-500">Вы ещё не сохранили ни одной вакансии</p>
+                                    <Briefcase className="mx-auto h-12 w-12 text-gray-300 mb-3" />
+                                    <h3 className="font-medium text-lg">Вы ещё не сохранили ни одной вакансии</h3>
+                                    <p className="text-gray-500 mt-2">После сохранения вакансии появятся здесь</p>
                                 </div>
                             </td>
                         </tr>

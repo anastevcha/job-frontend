@@ -40,7 +40,7 @@ const Applicants = () => {
             <Navbar />
 
             <div className="max-w-7xl mx-auto px-4 py-10">
-                {/* Заголовок */}
+                
                 <motion.h1
                     initial={{ y: -20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -52,7 +52,7 @@ const Applicants = () => {
                     <span className="text-gray-500">({applicants?.applications?.length || 0})</span>
                 </motion.h1>
 
-                {/* Таблица откликов */}
+               
                 <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}

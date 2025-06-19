@@ -9,15 +9,17 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useSelector } from 'react-redux';
-import useGetAllAdminJobs from '@/hooks/useGetAllAdminJobs';
 import { motion } from "framer-motion";
-import { Briefcase, Edit2} from "lucide-react";
+import { Briefcase, Edit2 } from "lucide-react";
+import useGetJobById from '@/hooks/useGetJobById';
 
-const JOB_API_END_POINT = "http://localhost:8000/api/v1/job"; 
+const JOB_API_END_POINT = "http://localhost:8000/api/v1/job";
 
 const JobSetup = () => {
     const params = useParams();
     const navigate = useNavigate();
+    const { singleJob, loading: jobLoading } = useSelector((store) => store.job);
+    const { companies } = useSelector((store) => store.company);
 
     const [input, setInput] = useState({
         title: "",
@@ -32,13 +34,16 @@ const JobSetup = () => {
     });
 
     const [loading, setLoading] = useState(false);
-    const { singleJob } = useSelector((store) => store.job); 
-    const { companies } = useSelector((store) => store.company); 
+    const [selectedCompanyName, setSelectedCompanyName] = useState("");
 
-    // Получаем текущую вакансию по ID
-    useGetAllAdminJobs();
+    useGetJobById(params.id);
 
-    
+    if (jobLoading) {
+        return <div className="flex justify-center items-center h-screen">
+            <Loader2 className="animate-spin h-8 w-8" />
+        </div>;
+    }
+
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
@@ -48,6 +53,7 @@ const JobSetup = () => {
             (company) => company.name.toLowerCase() === value
         );
         setInput({ ...input, companyId: selectedCompany?._id || "" });
+        setSelectedCompanyName(selectedCompany?.name || "");
     };
 
     const submitHandler = async (e) => {
@@ -72,7 +78,7 @@ const JobSetup = () => {
 
             if (res.data.success) {
                 toast.success(res.data.message);
-                navigate("/admin/jobs"); 
+                navigate("/admin/jobs");
             }
         } catch (error) {
             console.log(error);
@@ -82,9 +88,9 @@ const JobSetup = () => {
         }
     };
 
-    // Устанавливаем начальные значения из Redux
     useEffect(() => {
-        if (singleJob) {
+        if (singleJob && companies.length > 0) {
+            const currentCompany = companies.find(c => c._id === singleJob.company?._id);
             setInput({
                 title: singleJob.title || "",
                 description: singleJob.description || "",
@@ -96,8 +102,9 @@ const JobSetup = () => {
                 position: singleJob.position || 0,
                 companyId: singleJob.company?._id || "",
             });
+            setSelectedCompanyName(currentCompany?.name || "");
         }
-    }, [singleJob]);
+    }, [singleJob, companies]);
 
     return (
         <motion.div
@@ -110,7 +117,7 @@ const JobSetup = () => {
             <Navbar />
 
             <div className="max-w-xl mx-auto my-10 px-4">
-                
+
                 <motion.div
                     initial={{ y: -20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -128,7 +135,7 @@ const JobSetup = () => {
                     <h1 className="font-bold text-2xl">Редактирование вакансии</h1>
                 </motion.div>
 
-                
+
                 <motion.form
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -136,7 +143,7 @@ const JobSetup = () => {
                     onSubmit={submitHandler}
                     className="bg-white p-6 rounded-xl shadow-md border border-gray-200"
                 >
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
                             <Label>Название вакансии</Label>
@@ -255,13 +262,18 @@ const JobSetup = () => {
                         </div>
                     </div>
 
-                    {/* Выбор компании */}
+                   
                     {companies && companies.length > 0 ? (
                         <div className="mb-6">
                             <Label>Выберите компанию</Label>
-                            <Select onValueChange={selectChangeHandler} defaultValue={input.companyId}>
+                            <Select
+                                onValueChange={selectChangeHandler}
+                                value={selectedCompanyName.toLowerCase()}
+                            >
                                 <SelectTrigger className="w-full mt-2">
-                                    <SelectValue placeholder="Выберите компанию..." />
+                                    <SelectValue placeholder={selectedCompanyName || "Выберите компанию..."}>
+                                        {selectedCompanyName || "Выберите компанию..."}
+                                    </SelectValue>
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
@@ -280,7 +292,7 @@ const JobSetup = () => {
                         </p>
                     )}
 
-                    {/* Кнопка отправки */}
+                    
                     <motion.div
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}

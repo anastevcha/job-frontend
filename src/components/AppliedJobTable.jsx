@@ -22,7 +22,7 @@ const statusColors = {
 const AppliedJobTable = () => {
     const { allAppliedJobs } = useSelector((store) => store.job);
 
-    // Фильтруем только те отклики, где job НЕ null
+    // фильтруем только те отклики, где job НЕ null
     const validAppliedJobs = allAppliedJobs?.filter(
         (appliedJob) => appliedJob?.job
     );

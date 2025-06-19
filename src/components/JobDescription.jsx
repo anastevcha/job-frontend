@@ -30,7 +30,7 @@ const JobDescription = () => {
 
     const [loading, setLoading] = useState(false);
 
-    // Авто-проверка при загрузке страницы
+    // авто проверка отклика при загрузке страницы (работает почему то не так как надо!)
     useEffect(() => {
         if (!user || !singleJob) return;
 
@@ -73,7 +73,7 @@ const JobDescription = () => {
         });
 
         if (res.data.success) {
-            dispatch(setSingleJob(res.data.job)); // Получаем обновлённый `job`
+            dispatch(setSingleJob(res.data.job)); //получаем обновленную запись job
             toast.success(res.data.message);
         }
     } catch (error) {
@@ -84,7 +84,7 @@ const JobDescription = () => {
     }
 };
 
-    // Форматирование даты
+    
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleDateString("ru-RU");
@@ -98,7 +98,7 @@ const JobDescription = () => {
             transition={{ duration: 0.5 }}
             className="max-w-7xl mx-auto my-10 px-4"
         >
-            {/* Кнопка "Назад" + Заголовок */}
+           
             <motion.div
                 initial={{ y: 20 }}
                 animate={{ y: 0 }}
@@ -120,7 +120,7 @@ const JobDescription = () => {
                 </div>
             </motion.div>
 
-            {/* Кнопка "Откликнуться" */}
+            
             <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -148,7 +148,7 @@ const JobDescription = () => {
                 </Button>
             </motion.div>
 
-            {/* Информация о вакансии */}
+           
             <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -195,7 +195,7 @@ const JobDescription = () => {
                 </div>
             </motion.div>
 
-            {/* Бейджи под описанием */}
+           
             <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

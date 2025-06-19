@@ -38,10 +38,10 @@ const Navbar = () => {
             className="bg-white shadow-sm sticky top-0 z-50"
         >
             <div className="flex items-center justify-between px-6 mx-auto max-w-7xl h-16">
-                {/* Логотип */}
+                
                 <Link to="/" className="text-2xl font-bold">Трудовой<span className='text-[#3995ca]'>Мост</span></Link>
 
-                {/* Навигационное меню */}
+                
                 <nav className="flex items-center gap-12">
                     <ul className="flex font-medium items-center gap-8 text-gray-700">
                         {!user ? (
@@ -64,7 +64,7 @@ const Navbar = () => {
                         )}
                     </ul>
 
-                    {/* Кнопки или профиль пользователя */}
+                    
                     <div className="flex items-center gap-4">
                         {!user ? (
                             <div className="flex items-center gap-2">

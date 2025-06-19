@@ -39,7 +39,7 @@ const CompaniesTable = () => {
         setFilteredCompanies(filtered);
     }, [companies, searchCompanyByText]);
 
-    // Функция удаления компании
+   
     const deleteCompanyHandler = async (e, companyId) => {
         e.stopPropagation();
 

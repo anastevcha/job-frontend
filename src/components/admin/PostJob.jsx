@@ -54,7 +54,7 @@ const PostJob = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
 
-        // Проверка обязательных полей
+       
         if (!input.title || !input.description || !input.requirements || !input.companyId) {
             return toast.error("Пожалуйста, заполните все обязательные поля");
         }
@@ -98,7 +98,7 @@ const PostJob = () => {
                     onSubmit={submitHandler}
                     className="bg-white p-6 rounded-xl shadow-md border border-gray-200 w-full max-w-4xl"
                 >
-                    {/* Заголовок */}
+                   
                     <motion.h1
                         initial={{ x: -10, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
@@ -109,9 +109,9 @@ const PostJob = () => {
                         <span>Создание новой вакансии</span>
                     </motion.h1>
 
-                    {/* Форма */}
+                    
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        {/* Название */}
+                        
                         <div>
                             <Label className="flex items-center gap-2">
                                 <Briefcase className="h-4 w-4 text-gray-400" />
@@ -127,7 +127,7 @@ const PostJob = () => {
                             />
                         </div>
 
-                        {/* Местоположение */}
+                        
                         <div>
                             <Label className="flex items-center gap-2">
                                 <Briefcase className="h-4 w-4 text-gray-400" />
@@ -143,7 +143,7 @@ const PostJob = () => {
                             />
                         </div>
 
-                        {/* Описание */}
+                        
                         <div className="md:col-span-2">
                             <Label className="flex items-center gap-2">
                                 <Briefcase className="h-4 w-4 text-gray-400" />
@@ -160,7 +160,7 @@ const PostJob = () => {
                             />
                         </div>
 
-                        {/* Требования */}
+                       
                         <div className="md:col-span-2">
                             <Label className="flex items-center gap-2">
                                 <Briefcase className="h-4 w-4 text-gray-400" />
@@ -177,7 +177,7 @@ const PostJob = () => {
                             />
                         </div>
 
-                        {/* Заработная плата */}
+                        
                         <div>
                             <Label className="flex items-center gap-2">
                                 <Briefcase className="h-4 w-4 text-gray-400" />
@@ -193,7 +193,7 @@ const PostJob = () => {
                             />
                         </div>
 
-                        {/* График работы */}
+                        
                         <div>
                             <Label className="flex items-center gap-2">
                                 <Briefcase className="h-4 w-4 text-gray-400" />
@@ -209,7 +209,7 @@ const PostJob = () => {
                             />
                         </div>
 
-                        {/* Опыт работы */}
+                        
                         <div>
                             <Label className="flex items-center gap-2">
                                 <Briefcase className="h-4 w-4 text-gray-400" />
@@ -225,7 +225,7 @@ const PostJob = () => {
                             />
                         </div>
 
-                        {/* Вакантные места */}
+                        
                         <div>
                             <Label className="flex items-center gap-2">
                                 <Briefcase className="h-4 w-4 text-gray-400" />
@@ -242,7 +242,7 @@ const PostJob = () => {
                         </div>
                     </div>
 
-                    {/* Выбор компании */}
+                    
                     {companies.length > 0 ? (
                         <div className="mb-6">
                             <Label>Выберите компанию</Label>
@@ -267,7 +267,7 @@ const PostJob = () => {
                         </p>
                     )}
 
-                    {/* Кнопка отправки */}
+                    
                     <motion.div
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}

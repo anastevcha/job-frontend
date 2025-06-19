@@ -72,7 +72,7 @@ const Login = () => {
                     <h1 className="font-bold text-2xl mb-6 text-center">Вход в аккаунт</h1>
 
                     <form onSubmit={submitHandler}>
-                        {/* Email */}
+                        
                         <div className="my-4">
                             <Label>Электронная почта</Label>
                             <Input
@@ -85,7 +85,7 @@ const Login = () => {
                             />
                         </div>
 
-                        {/* Password */}
+                        
                         <div className="my-4">
                             <Label>Пароль</Label>
                             <Input
@@ -98,7 +98,7 @@ const Login = () => {
                             />
                         </div>
 
-                        {/* Role Selection */}
+                        
                         <div className="my-5">
                             <Label>Вы —</Label>
                             <div className="flex gap-4 mt-3">
@@ -127,7 +127,7 @@ const Login = () => {
                             </div>
                         </div>
 
-                        {/* Submit Button */}
+                        
                         {loading ? (
                             <Button disabled className="w-full my-4">
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -139,7 +139,7 @@ const Login = () => {
                             </Button>
                         )}
 
-                        {/* Register link */}
+                       
                         <p className="text-sm text-center text-gray-600 mt-4">
                             Ещё не зарегистрированы?{" "}
                             <Link to="/signup" className="text-[#3995ca] hover:underline">

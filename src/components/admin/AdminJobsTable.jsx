@@ -21,7 +21,7 @@ import { Button } from "../ui/button";
 import axios from "axios";
 import { toast } from "sonner";
 
-const JOB_API_END_POINT = "http://localhost:8000/api/v1/job"; 
+const JOB_API_END_POINT = "http://localhost:8000/api/v1/job";
 
 const AdminJobsTable = ({ jobs }) => {
     const navigate = useNavigate();
@@ -34,9 +34,13 @@ const AdminJobsTable = ({ jobs }) => {
         );
     }
 
-    // Функция удаления вакансии
+    // функция удаления вакансии
     const deleteJobHandler = async (e, jobId) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
+
+        if (!jobId) {
+            return toast.error("ID вакансии отсутствует");
+        }
 
         const confirmDelete = window.confirm("Вы уверены, что хотите удалить эту вакансию?");
         if (!confirmDelete) return;
@@ -49,9 +53,9 @@ const AdminJobsTable = ({ jobs }) => {
             if (res.data.success) {
                 toast.success(res.data.message);
 
-                
-                const updatedJobs = jobs.filter((job) => job._id !== jobId);
-                navigate(0); 
+
+                const updatedJobs = jobs.filter(job => job._id !== jobId);
+                setJobs(updatedJobs);
             }
         } catch (error) {
             console.error("Ошибка при удалении вакансии:", error);
@@ -106,7 +110,7 @@ const AdminJobsTable = ({ jobs }) => {
                                                 </Button>
                                             </PopoverTrigger>
                                             <PopoverContent className="p-2 space-y-1 min-w-[160px]">
-                                                
+
                                                 <div
                                                     onClick={(e) => {
                                                         e.stopPropagation();
@@ -118,7 +122,7 @@ const AdminJobsTable = ({ jobs }) => {
                                                     <span>Редактировать</span>
                                                 </div>
 
-                                                
+
                                                 <div
                                                     onClick={(e) => {
                                                         e.stopPropagation();
@@ -130,7 +134,7 @@ const AdminJobsTable = ({ jobs }) => {
                                                     <span>Откликнувшиеся</span>
                                                 </div>
 
-                                                
+
                                                 <div
                                                     onClick={(e) => deleteJobHandler(e, job._id)}
                                                     className="flex items-center gap-2 px-3 py-2 rounded-md text-sm hover:bg-red-100 cursor-pointer text-red-600"

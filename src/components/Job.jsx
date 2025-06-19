@@ -16,7 +16,7 @@ const Job = ({ job }) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
 
-    // Получаем список сохранённых вакансий
+    // получаем список сохранённых вакансий
     const savedJobs = useSelector((store) => store.job.savedJobs);
     const isSaved = savedJobs?.some(savedJob => savedJob._id === job._id);
 
@@ -33,7 +33,7 @@ const Job = ({ job }) => {
         setLoading(true);
         try {
             if (isSaved) {
-                // Удаляем вакансию из сохранённых
+                
                 const res = await axios.post(
                     `${JOB_API_END_POINT}/unsave/${job._id}`,
                     {},
@@ -42,11 +42,11 @@ const Job = ({ job }) => {
 
                 if (res.data.success) {
                     toast.info("Вакансия удалена из сохранённых");
-                    dispatch(unsaveJob(job._id)); // Убираем из Redux
+                    dispatch(unsaveJob(job._id)); 
                 }
 
             } else {
-                // Сохраняем вакансию
+                
                 const res = await axios.post(
                     `${JOB_API_END_POINT}/save/${job._id}`,
                     {},
@@ -55,12 +55,12 @@ const Job = ({ job }) => {
 
                 if (res.data.success) {
                     toast.success(res.data.message);
-                    dispatch(saveJob(job)); // Добавляем в Redux
+                    dispatch(saveJob(job)); 
                 }
             }
         } catch (error) {
             console.error("Ошибка при сохранении/удалении вакансии:", error);
-            toast.error(error.response?.data?.message || "Не удалось выполнить действие");
+            
         } finally {
             setLoading(false);
         }

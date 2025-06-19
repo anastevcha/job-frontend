@@ -16,14 +16,14 @@ const Companies = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // Отправляем текст поиска в Redux
+    
     useEffect(() => {
         dispatch(setSearchCompanyByText(input));
     }, [input]);
 
     const { companies } = useSelector((store) => store.company);
 
-    // Локальная фильтрация для мгновенного отображения
+    
     const filteredCompanies = input
         ? companies?.filter((company) =>
             company?.name?.toLowerCase().includes(input.toLowerCase())

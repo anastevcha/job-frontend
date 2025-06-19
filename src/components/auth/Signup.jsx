@@ -89,7 +89,7 @@ const Signup = () => {
                     <h1 className="font-bold text-2xl mb-6 text-center">Регистрация</h1>
 
                     <form onSubmit={submitHandler} className="space-y-4">
-                        {/* Full Name */}
+                       
                         <div className="space-y-2">
                             <Label>Полное имя</Label>
                             <Input
@@ -102,7 +102,7 @@ const Signup = () => {
                             />
                         </div>
 
-                        {/* Email */}
+                        
                         <div className="space-y-2">
                             <Label>Электронная почта</Label>
                             <Input
@@ -115,7 +115,7 @@ const Signup = () => {
                             />
                         </div>
 
-                        {/* Phone Number */}
+                        
                         <div className="space-y-2">
                             <Label>Номер телефона</Label>
                             <Input
@@ -128,7 +128,7 @@ const Signup = () => {
                             />
                         </div>
 
-                        {/* Password */}
+                        
                         <div className="space-y-2">
                             <Label>Пароль</Label>
                             <Input
@@ -141,7 +141,7 @@ const Signup = () => {
                             />
                         </div>
 
-                        {/* Role Selection */}
+                        
                         <div className="my-5 space-y-2">
                             <Label>Вы —</Label>
                             <div className="flex gap-4">
@@ -170,7 +170,7 @@ const Signup = () => {
                             </div>
                         </div>
 
-                        {/* Avatar Upload */}
+                       
                         <div className="space-y-2">
                             <Label>Фото профиля</Label>
                             <Input
@@ -181,7 +181,7 @@ const Signup = () => {
                             />
                         </div>
 
-                        {/* Submit Button */}
+                        
                         {loading ? (
                             <Button disabled className="w-full my-4">
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -193,7 +193,7 @@ const Signup = () => {
                             </Button>
                         )}
 
-                        {/* Login link */}
+                       
                         <p className="text-sm text-center text-gray-600 mt-4">
                             Уже зарегистрированы?{" "}
                             <Link to="/login" className="text-[#3995ca] hover:underline">
